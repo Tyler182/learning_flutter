@@ -8,6 +8,7 @@ class MyStateLessWidget extends StatelessWidget {
       home: Scaffold(
         backgroundColor: Colors.indigo,
         appBar: AppBar(
+          centerTitle:true,
           title: Text("Download page"),
         ),
         body: Center(
