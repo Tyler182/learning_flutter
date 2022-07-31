@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 void main() => runApp(_MyStatelessWidgetState());
 
@@ -18,20 +17,20 @@ class _MyStatelessWidgetState extends StatelessWidget {
 AppBar _buildAppBar() {
   return AppBar(
     backgroundColor: Colors.white,
-    iconTheme: IconThemeData(color: Colors.black54),
+    iconTheme: const IconThemeData(color: Colors.black54),
     leading: IconButton(
-      icon: Icon(
+      icon:const Icon(
         Icons.menu,
       ),
       onPressed: () {},
     ),
-    title: Text(
+    title: const Text(
       "Wheather2",
       style: TextStyle(color: Colors.black87),
     ),
     actions: <Widget>[
       IconButton(
-        icon: Icon(Icons.settings),
+        icon: const Icon(Icons.settings),
         onPressed: () {},
       ),
     ],
@@ -45,19 +44,19 @@ Widget _buildBody() {
       children: <Widget>[
         _headerImage(),
         SafeArea(
-          minimum: EdgeInsets.all(16),
+          minimum: const EdgeInsets.all(16),
           child: Column(
             children: [
               _wetherDay(),
-              Divider(
+              const Divider(
                 thickness: 1,
               ),
               _wetherDescription(),
-              Divider(),
+              const Divider(),
               _temperature(),
-              Divider(),
+              const Divider(),
               _temperatureForecast(),
-              Divider(),
+              const Divider(),
               _footerRatings(),
             ],
           ),
@@ -77,7 +76,7 @@ Widget _headerImage() {
 
 Widget _wetherDay() {
   // Day of week + Date WIdget
-  return Text(
+  return const Text(
     "Tuesday - May 22",
     style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
   );
@@ -85,8 +84,10 @@ Widget _wetherDay() {
 
 Widget _wetherDescription() {
   //Small text weather description widget
-  return Text(
-    "The summer is usually hot. In June it is warm and rainy. July is usually very hot, especially its second half. The weather is sunny. The first days of August are often the hottest.",
+  return const Text(
+    "The summer is usually hot. In June it is warm and rainy."
+    "July is usually very hot, especially its second half."
+    "The weather is sunny. The first days of August are often the hottest.",
     style: TextStyle(fontSize: 14, color: Colors.black54),
   );
 }
@@ -97,7 +98,7 @@ Widget _temperature() {
     mainAxisAlignment: MainAxisAlignment.center,
     children: <Widget>[
       Icon(Icons.sunny, color: Colors.yellow.shade600),
-      SizedBox(width: 20),
+      const SizedBox(width: 20),
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -107,7 +108,7 @@ Widget _temperature() {
               color: Colors.purple.shade400,
             ),
           ),
-          Text("Murmanskay oblast, Murmansk",
+          const Text("Murmanskay oblast, Murmansk",
               style: TextStyle(color: Colors.black54)),
         ],
       )
@@ -133,10 +134,11 @@ Widget _temperatureForecast() {
 }
 
 Chip _temperatureForecastDay(int temp) {
-  //Chip widget for Temperature Forecast, show static Icon and temperature of the day.
+  //Chip widget for Temperature Forecast,
+  //show static Icon and temperature of the day.
   return Chip(
     label: Text("${temp.toString()}C"),
-    avatar: Icon(
+    avatar: const Icon(
       Icons.cloud,
       color: Colors.blue,
     ),
@@ -151,7 +153,7 @@ Widget _footerRatings() {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: <Widget>[
-      Text("Info with openweather.com"),
+      const Text("Info with openweather.com"),
       Row(children: <Widget>[
         Icon(
           Icons.star,
@@ -165,8 +167,8 @@ Widget _footerRatings() {
           Icons.star,
           color: Colors.yellow.shade600,
         ),
-        Icon(Icons.star),
-        Icon(Icons.star),
+        const Icon(Icons.star),
+        const Icon(Icons.star),
       ]),
     ],
   );
