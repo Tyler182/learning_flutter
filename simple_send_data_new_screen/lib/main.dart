@@ -10,11 +10,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      routes: {
-        '/page2': ((context) => Page2()),
-      },
-      initialRoute: '/',
+    return const MaterialApp(
       home: HomePage(),
     );
   }
@@ -24,8 +20,7 @@ class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    User user;
-    user = User('Alex', 30);
+    User user = User(name: 'Alex', age: 30);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Page 1'),
@@ -36,7 +31,10 @@ class HomePage extends StatelessWidget {
         ),
         onPressed: () {
           //on press jump to page2
-          Navigator.pushNamed(context, '/page2', arguments: user);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Page2(user: user)),
+          );
         },
       ),
     );
@@ -44,15 +42,14 @@ class HomePage extends StatelessWidget {
 }
 
 class Page2 extends StatelessWidget {
-  const Page2({Key? key}) : super(key: key);
+  // const Page2({Key? key}) : super(key: key);
+  final User? user;
+  Page2({this.user});
   @override
   Widget build(BuildContext context) {
-    User user = (ModalRoute.of(context)?.settings.arguments ?? User('', 0)) as User;
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('${user.name} - ${user.age}'),
-        ),
+        appBar: AppBar(title: Text('${this.user?.name}')),
         body: ElevatedButton(
           child: const Center(
             child: Text('Back to Page 1'),
@@ -70,5 +67,5 @@ class Page2 extends StatelessWidget {
 class User {
   String? name;
   double? age;
-  User(this.name, this.age);
+  User({this.name, this.age});
 }
