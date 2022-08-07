@@ -9,6 +9,20 @@ class RegisterFormPage extends StatefulWidget {
 
 class RegisterFormPageState extends State<RegisterFormPage> {
   bool _hidePass = true;
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _storyController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _storyController.dispose();
+    _phoneController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,8 +34,9 @@ class RegisterFormPageState extends State<RegisterFormPage> {
           child: ListView(
             padding: const EdgeInsets.all(16.0),
             children: <Widget>[
-              const TextField(
-                decoration: InputDecoration(
+              TextField(
+                controller: _nameController,
+                decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.person),
                   hintText: 'Surname Name',
                   helperText: 'Only Surname and Name',
@@ -50,6 +65,7 @@ class RegisterFormPageState extends State<RegisterFormPage> {
               ),
               const SizedBox(height: 10),
               TextFormField(
+                controller: _phoneController,
                 keyboardType: TextInputType.phone,
                 // inputFormatters: [
                 //   FilteringTextInputFormatter.digitsOnly,
@@ -84,6 +100,7 @@ class RegisterFormPageState extends State<RegisterFormPage> {
               ),
               const SizedBox(height: 10),
               TextFormField(
+                controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
                 decoration: const InputDecoration(
                   labelText: 'Email Address',
@@ -94,6 +111,7 @@ class RegisterFormPageState extends State<RegisterFormPage> {
               ),
               const SizedBox(height: 20),
               TextFormField(
+                controller: _storyController,
                 decoration: const InputDecoration(
                   labelText: 'Life Story',
                   hintText: 'Tell us about yourselve',
@@ -119,7 +137,7 @@ class RegisterFormPageState extends State<RegisterFormPage> {
                 maxLength: 12,
                 decoration: InputDecoration(
                   labelText: 'Password',
-                  prefixIcon: Icon(Icons.security),
+                  prefixIcon: const Icon(Icons.security),
                   suffixIcon: IconButton(
                     onPressed: () {
                       setState(() {
@@ -127,8 +145,8 @@ class RegisterFormPageState extends State<RegisterFormPage> {
                       });
                     },
                     icon: _hidePass
-                        ? Icon(Icons.visibility)
-                        : Icon(Icons.visibility_off),
+                        ? const Icon(Icons.visibility)
+                        : const Icon(Icons.visibility_off),
                   ),
                   hintText: 'Enter password',
                   helperText: 'Symbols, numbers, special characters',
@@ -139,7 +157,7 @@ class RegisterFormPageState extends State<RegisterFormPage> {
                 obscureText: _hidePass,
                 decoration: InputDecoration(
                   labelText: 'Confirm Password',
-                  prefixIcon: Icon(Icons.border_color),
+                  prefixIcon: const Icon(Icons.border_color),
                   hintText: 'Enter passwords',
                   helperText: 'Same as in field password',
                   suffixIcon: IconButton(
@@ -149,8 +167,8 @@ class RegisterFormPageState extends State<RegisterFormPage> {
                       });
                     },
                     icon: _hidePass
-                      ? Icon(Icons.visibility)
-                      : Icon(Icons.visibility_off),
+                      ? const Icon(Icons.visibility)
+                      : const Icon(Icons.visibility_off),
                   ),
                 ),
               ),
@@ -159,7 +177,12 @@ class RegisterFormPageState extends State<RegisterFormPage> {
                 style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all<Color>(Colors.green)),
-                onPressed: (() {}),
+                onPressed: (() {
+                  print(_nameController.text);
+                  print(_phoneController.text);
+                  print(_emailController.text);
+                  print(_storyController.text);
+                }),
                 child: const Text('Submit Form'),
               ),
             ],
