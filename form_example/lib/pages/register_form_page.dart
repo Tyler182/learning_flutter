@@ -13,6 +13,7 @@ class RegisterFormPageState extends State<RegisterFormPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _storyController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -26,167 +27,197 @@ class RegisterFormPageState extends State<RegisterFormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Register Form Page'),
-          centerTitle: true,
-        ),
-        body: Form(
-          child: ListView(
-            padding: const EdgeInsets.all(16.0),
-            children: <Widget>[
-              TextField(
-                controller: _nameController,
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.person),
-                  hintText: 'Surname Name',
-                  helperText: 'Only Surname and Name',
-                  labelText: 'Full Name*',
-                  suffixIcon: Icon(Icons.delete_outline),
-                  suffixIconColor: Colors.red,
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.black,
-                      width: 2,
-                    ),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(16),
-                    ),
+      appBar: AppBar(
+        title: const Text('Register Form Page'),
+        centerTitle: true,
+      ),
+      body: Form(
+        key: _formKey,
+        child: ListView(
+          padding: const EdgeInsets.all(16.0),
+          children: <Widget>[
+            TextFormField(
+              controller: _nameController,
+              validator: _validateName,
+              decoration: const InputDecoration(
+                prefixIcon: Icon(Icons.person),
+                hintText: 'Surname Name',
+                helperText: 'Only Surname and Name',
+                labelText: 'Full Name*',
+                suffixIcon: Icon(Icons.delete_outline),
+                suffixIconColor: Colors.red,
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.black,
+                    width: 2,
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.blue,
-                      width: 2,
-                    ),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(16),
-                    ),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(16),
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.blue,
+                    width: 2,
+                  ),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(16),
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
-              TextFormField(
-                controller: _phoneController,
-                keyboardType: TextInputType.phone,
-                // inputFormatters: [
-                //   FilteringTextInputFormatter.digitsOnly,
-                // ],
-                maxLength: 16,
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.phone),
-                  helperText: 'Phone we can call you',
-                  suffixIcon: Icon(Icons.delete_outline),
-                  suffixIconColor: Colors.red,
-                  labelText: 'Phone Number',
-                  hintText: '+x(xxx)xxx-xx-xx',
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.black,
-                      width: 2,
-                    ),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(16),
-                    ),
+            ),
+            const SizedBox(height: 10),
+            TextFormField(
+              validator: _validatePhone,
+              controller: _phoneController,
+              keyboardType: TextInputType.phone,
+              inputFormatters: [
+                FilteringTextInputFormatter(RegExp(r'^[()\d -]{1,15}$'), allow: true) ,
+              ],
+              maxLength: 16,
+              decoration: const InputDecoration(
+                prefixIcon: Icon(Icons.phone),
+                helperText: 'Phone we can call you',
+                suffixIcon: Icon(Icons.delete_outline),
+                suffixIconColor: Colors.red,
+                labelText: 'Phone Number',
+                hintText: '+x(xxx)xxx-xx-xx',
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.black,
+                    width: 2,
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.blue,
-                      width: 2,
-                    ),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(16),
-                    ),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(16),
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.blue,
+                    width: 2,
+                  ),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(16),
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
-              TextFormField(
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                  labelText: 'Email Address',
-                  prefixIcon: Icon(Icons.mail),
-                  hintText: 'Surname Name',
-                  helperText: 'Only Surname and Name',
-                ),
+            ),
+            const SizedBox(height: 10),
+            TextFormField(
+              controller: _emailController,
+              keyboardType: TextInputType.emailAddress,
+              decoration: const InputDecoration(
+                labelText: 'Email Address',
+                prefixIcon: Icon(Icons.mail),
+                hintText: 'Surname Name',
+                helperText: 'Only Surname and Name',
               ),
-              const SizedBox(height: 20),
-              TextFormField(
-                controller: _storyController,
-                decoration: const InputDecoration(
-                  labelText: 'Life Story',
-                  hintText: 'Tell us about yourselve',
-                  helperText: 'Keep it short',
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        // color: Colors.black,
-                        // width: 2,
-                        ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.blue,
+            ),
+            const SizedBox(height: 20),
+            TextFormField(
+              controller: _storyController,
+              decoration: const InputDecoration(
+                labelText: 'Life Story',
+                hintText: 'Tell us about yourselve',
+                helperText: 'Keep it short',
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      // color: Colors.black,
                       // width: 2,
-                    ),
+                      ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.blue,
+                    // width: 2,
                   ),
                 ),
-                maxLines: 3,
               ),
-              const SizedBox(height: 10),
-              TextFormField(
-                obscureText: _hidePass,
-                maxLength: 12,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  prefixIcon: const Icon(Icons.security),
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _hidePass = !_hidePass;
-                      });
-                    },
-                    icon: _hidePass
-                        ? const Icon(Icons.visibility)
-                        : const Icon(Icons.visibility_off),
-                  ),
-                  hintText: 'Enter password',
-                  helperText: 'Symbols, numbers, special characters',
-                ),
-              ),
-              const SizedBox(height: 10),
-              TextFormField(
-                obscureText: _hidePass,
-                decoration: InputDecoration(
-                  labelText: 'Confirm Password',
-                  prefixIcon: const Icon(Icons.border_color),
-                  hintText: 'Enter passwords',
-                  helperText: 'Same as in field password',
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _hidePass = !_hidePass;
-                      });
-                    },
-                    icon: _hidePass
+              maxLines: 3,
+            ),
+            const SizedBox(height: 10),
+            TextFormField(
+              obscureText: _hidePass,
+              maxLength: 12,
+              decoration: InputDecoration(
+                labelText: 'Password',
+                prefixIcon: const Icon(Icons.security),
+                suffixIcon: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _hidePass = !_hidePass;
+                    });
+                  },
+                  icon: _hidePass
                       ? const Icon(Icons.visibility)
                       : const Icon(Icons.visibility_off),
-                  ),
+                ),
+                hintText: 'Enter password',
+                helperText: 'Symbols, numbers, special characters',
+              ),
+            ),
+            const SizedBox(height: 10),
+            TextFormField(
+              obscureText: _hidePass,
+              decoration: InputDecoration(
+                labelText: 'Confirm Password',
+                prefixIcon: const Icon(Icons.border_color),
+                hintText: 'Enter passwords',
+                helperText: 'Same as in field password',
+                suffixIcon: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _hidePass = !_hidePass;
+                    });
+                  },
+                  icon: _hidePass
+                      ? const Icon(Icons.visibility)
+                      : const Icon(Icons.visibility_off),
                 ),
               ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.green)),
-                onPressed: (() {
-                  print(_nameController.text);
-                  print(_phoneController.text);
-                  print(_emailController.text);
-                  print(_storyController.text);
-                }),
-                child: const Text('Submit Form'),
-              ),
-            ],
-          ),
-        ));
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.green)),
+              onPressed: _submitForm,
+              child: const Text('Submit Form'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _submitForm() {
+    if ( (_formKey.currentState?.validate()) ?? false) {
+      print(_nameController.text);
+      print(_phoneController.text);
+      print(_emailController.text);
+      print(_storyController.text);
+    }
+  }
+
+  String? _validateName(String? value) {
+    final nameExp = RegExp(r'^[a-zA-Z]+$');
+    if ((value?.isEmpty) ?? false) {
+      return 'Plz input non empty value';
+    } else if (!nameExp.hasMatch(value ?? '')) {
+      return 'Plz input non empty value';
+      } else {
+        return null;
+        }
+  }
+
+  String? _validatePhone(String? value) {
+    final phoneExp = RegExp(r'^\(\d{3}\)\d{3}-\d{4}$');
+    if ((value?.isEmpty) ?? false) {
+      return 'Plz input non empty phone';
+    } else if (!phoneExp.hasMatch(value ?? '')) {
+      return 'Plz input phone in format (xxx)xxx-xxxx';
+      } else {
+        return null;
+        }
   }
 }
