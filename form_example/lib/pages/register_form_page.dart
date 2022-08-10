@@ -13,6 +13,8 @@ class RegisterFormPageState extends State<RegisterFormPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _storyController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _passController = TextEditingController();
+  final TextEditingController _confirmPassController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -21,6 +23,8 @@ class RegisterFormPageState extends State<RegisterFormPage> {
     _emailController.dispose();
     _storyController.dispose();
     _phoneController.dispose();
+    _passController.dispose();
+    _confirmPassController.dispose();
     super.dispose();
   }
 
@@ -105,6 +109,7 @@ class RegisterFormPageState extends State<RegisterFormPage> {
             const SizedBox(height: 10),
             TextFormField(
               controller: _emailController,
+              validator: _validateEmail,
               keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
                 labelText: 'Email Address',
@@ -138,6 +143,8 @@ class RegisterFormPageState extends State<RegisterFormPage> {
             const SizedBox(height: 10),
             TextFormField(
               obscureText: _hidePass,
+              controller: _passController,
+              validator: _validatePass,
               maxLength: 12,
               decoration: InputDecoration(
                 labelText: 'Password',
@@ -159,6 +166,8 @@ class RegisterFormPageState extends State<RegisterFormPage> {
             const SizedBox(height: 10),
             TextFormField(
               obscureText: _hidePass,
+              validator: _validatePass,
+              controller: _confirmPassController,
               decoration: InputDecoration(
                 labelText: 'Confirm Password',
                 prefixIcon: const Icon(Icons.border_color),
@@ -192,6 +201,7 @@ class RegisterFormPageState extends State<RegisterFormPage> {
 
   void _submitForm() {
     if ( (_formKey.currentState?.validate()) ?? false) {
+      _formKey.currentState?.save();
       print(_nameController.text);
       print(_phoneController.text);
       print(_emailController.text);
@@ -220,4 +230,25 @@ class RegisterFormPageState extends State<RegisterFormPage> {
         return null;
         }
   }
+
+  String? _validateEmail(String? value) {
+    if ((value?.isEmpty) ?? false) {
+      return 'Email cannot be empty';
+    } else if (!_emailController.text.contains('@')) {
+      return 'Invalid email address';
+      } else {
+        return null;
+        }
+  }
+
+  String? _validatePass(String? value) {
+    if (((value?.length ?? 0) <= 8)) {
+      return 'Password minimum 8 symbols';
+    } else if (_passController.text != _confirmPassController.text) {
+      return 'Password and confirm password does not match';
+      } else {
+        return null;
+        }
+  }
+
 }
