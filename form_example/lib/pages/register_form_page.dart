@@ -16,6 +16,8 @@ class RegisterFormPageState extends State<RegisterFormPage> {
   final TextEditingController _passController = TextEditingController();
   final TextEditingController _confirmPassController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  List<String> _countries = ['Russia', 'Germany', 'France'];
+  late String _selectedCountry;
 
   @override
   void dispose() {
@@ -76,7 +78,8 @@ class RegisterFormPageState extends State<RegisterFormPage> {
               controller: _phoneController,
               keyboardType: TextInputType.phone,
               inputFormatters: [
-                FilteringTextInputFormatter(RegExp(r'^[()\d -]{1,15}$'), allow: true) ,
+                FilteringTextInputFormatter(RegExp(r'^[()\d -]{1,15}$'),
+                    allow: true),
               ],
               maxLength: 16,
               decoration: const InputDecoration(
@@ -117,6 +120,17 @@ class RegisterFormPageState extends State<RegisterFormPage> {
                 hintText: 'Surname Name',
                 helperText: 'Only Surname and Name',
               ),
+            ),
+            const SizedBox(height: 20),
+            DropdownButtonFormField(
+              items: _countries.map((country) => DropdownMenuItem(value: country, child: Text(country),)).toList(),
+              onChanged: (data) {
+                print(data);
+                setState(() {
+                  _selectedCountry = data as String;
+                });
+              value: _selectedCountry;
+              },
             ),
             const SizedBox(height: 20),
             TextFormField(
@@ -200,7 +214,7 @@ class RegisterFormPageState extends State<RegisterFormPage> {
   }
 
   void _submitForm() {
-    if ( (_formKey.currentState?.validate()) ?? false) {
+    if ((_formKey.currentState?.validate()) ?? false) {
       _formKey.currentState?.save();
       print(_nameController.text);
       print(_phoneController.text);
@@ -215,9 +229,9 @@ class RegisterFormPageState extends State<RegisterFormPage> {
       return 'Plz input non empty value';
     } else if (!nameExp.hasMatch(value ?? '')) {
       return 'Plz input non empty value';
-      } else {
-        return null;
-        }
+    } else {
+      return null;
+    }
   }
 
   String? _validatePhone(String? value) {
@@ -226,9 +240,9 @@ class RegisterFormPageState extends State<RegisterFormPage> {
       return 'Plz input non empty phone';
     } else if (!phoneExp.hasMatch(value ?? '')) {
       return 'Plz input phone in format (xxx)xxx-xxxx';
-      } else {
-        return null;
-        }
+    } else {
+      return null;
+    }
   }
 
   String? _validateEmail(String? value) {
@@ -236,9 +250,9 @@ class RegisterFormPageState extends State<RegisterFormPage> {
       return 'Email cannot be empty';
     } else if (!_emailController.text.contains('@')) {
       return 'Invalid email address';
-      } else {
-        return null;
-        }
+    } else {
+      return null;
+    }
   }
 
   String? _validatePass(String? value) {
@@ -246,9 +260,8 @@ class RegisterFormPageState extends State<RegisterFormPage> {
       return 'Password minimum 8 symbols';
     } else if (_passController.text != _confirmPassController.text) {
       return 'Password and confirm password does not match';
-      } else {
-        return null;
-        }
+    } else {
+      return null;
+    }
   }
-
 }
