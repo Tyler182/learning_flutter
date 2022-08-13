@@ -15,6 +15,10 @@ class RegisterFormPageState extends State<RegisterFormPage> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
   final TextEditingController _confirmPassController = TextEditingController();
+  final _nameFoxusNode = FocusNode();
+  final _phoneFoxusNode = FocusNode();
+  final _passFoxusNode = FocusNode();
+
   final _formKey = GlobalKey<FormState>();
   List<String> _countries = ['Russia', 'Germany', 'France'];
   late String _selectedCountry;
@@ -27,6 +31,10 @@ class RegisterFormPageState extends State<RegisterFormPage> {
     _phoneController.dispose();
     _passController.dispose();
     _confirmPassController.dispose();
+    _nameFoxusNode.dispose();
+    _phoneFoxusNode.dispose();
+    _passFoxusNode.dispose();
+
     super.dispose();
   }
 
@@ -43,6 +51,11 @@ class RegisterFormPageState extends State<RegisterFormPage> {
           padding: const EdgeInsets.all(16.0),
           children: <Widget>[
             TextFormField(
+              focusNode: _nameFoxusNode,
+              autofocus: true,
+              onFieldSubmitted: (str) {
+                _changeFocus(context, _nameFoxusNode, _phoneFoxusNode);
+              },
               controller: _nameController,
               validator: _validateName,
               decoration: const InputDecoration(
@@ -74,13 +87,17 @@ class RegisterFormPageState extends State<RegisterFormPage> {
             ),
             const SizedBox(height: 10),
             TextFormField(
+              focusNode: _phoneFoxusNode,
               validator: _validatePhone,
+              onFieldSubmitted: (str){
+                _changeFocus(context, _phoneFoxusNode, _passFoxusNode);
+              },
               controller: _phoneController,
               keyboardType: TextInputType.phone,
-              inputFormatters: [
-                FilteringTextInputFormatter(RegExp(r'^[()\d -]{1,15}$'),
-                    allow: true),
-              ],
+              // inputFormatters: [
+              //   FilteringTextInputFormatter(RegExp(r'^[()\d -]{1a,15}$'),
+              //       allow: true),
+              // ],
               maxLength: 16,
               decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.phone),
@@ -88,7 +105,7 @@ class RegisterFormPageState extends State<RegisterFormPage> {
                 suffixIcon: Icon(Icons.delete_outline),
                 suffixIconColor: Colors.red,
                 labelText: 'Phone Number',
-                hintText: '+x(xxx)xxx-xx-xx',
+                hintText: '(xxx)xxxx-xxx',
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                     color: Colors.black,
@@ -123,13 +140,19 @@ class RegisterFormPageState extends State<RegisterFormPage> {
             ),
             const SizedBox(height: 20),
             DropdownButtonFormField(
-              items: _countries.map((country) => DropdownMenuItem(value: country, child: Text(country),)).toList(),
+              items: _countries
+                  .map((country) => DropdownMenuItem(
+                        value: country,
+                        child: Text(country),
+                      ))
+                  .toList(),
               onChanged: (data) {
                 print(data);
                 setState(() {
                   _selectedCountry = data as String;
                 });
-              value: _selectedCountry;
+                value:
+                _selectedCountry;
               },
             ),
             const SizedBox(height: 20),
@@ -156,6 +179,7 @@ class RegisterFormPageState extends State<RegisterFormPage> {
             ),
             const SizedBox(height: 10),
             TextFormField(
+              focusNode: _passFoxusNode,
               obscureText: _hidePass,
               controller: _passController,
               validator: _validatePass,
@@ -211,6 +235,12 @@ class RegisterFormPageState extends State<RegisterFormPage> {
         ),
       ),
     );
+  }
+
+  void _changeFocus(BuildContext context, FocusNode currentFocusNode,
+      FocusNode newFocusNode) {
+    currentFocusNode.unfocus();
+    FocusScope.of(context).requestFocus(newFocusNode);
   }
 
   void _submitForm() {
