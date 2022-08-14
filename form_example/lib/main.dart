@@ -7,9 +7,17 @@ void main() {
 
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
+  final rootScaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
   @override
   Widget build(BuildContext context) {
-    return  RegisterFormPage();
+    return  MaterialApp(
+      home: const RegisterFormPage(),
+      scaffoldMessengerKey: rootScaffoldMessengerKey,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ), 
+    );
   }
 }
