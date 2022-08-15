@@ -22,7 +22,7 @@ class RegisterFormPageState extends State<RegisterFormPage> {
 
   final _formKey = GlobalKey<FormState>();
   List<String> _countries = ['Russia', 'Germany', 'France'];
-  late String _selectedCountry;
+  late String _selectedCountry = 'Russia';
 
   @override
   void dispose() {
@@ -60,14 +60,19 @@ class RegisterFormPageState extends State<RegisterFormPage> {
               },
               controller: _nameController,
               validator: _validateName,
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.person),
+              decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.person),
                 hintText: 'Surname Name',
                 helperText: 'Only Surname and Name',
                 labelText: 'Full Name*',
-                suffixIcon: Icon(Icons.delete_outline),
+                suffixIcon: GestureDetector(
+                  child: const Icon(Icons.delete_outline),
+                  onTap: () {
+                    _nameController.clear();
+                  },
+                ),
                 suffixIconColor: Colors.red,
-                enabledBorder: OutlineInputBorder(
+                enabledBorder: const OutlineInputBorder(
                   borderSide: BorderSide(
                     color: Colors.black,
                     width: 2,
@@ -76,7 +81,7 @@ class RegisterFormPageState extends State<RegisterFormPage> {
                     Radius.circular(16),
                   ),
                 ),
-                focusedBorder: OutlineInputBorder(
+                focusedBorder: const OutlineInputBorder(
                   borderSide: BorderSide(
                     color: Colors.blue,
                     width: 2,
@@ -98,14 +103,19 @@ class RegisterFormPageState extends State<RegisterFormPage> {
               controller: _phoneController,
               keyboardType: TextInputType.phone,
               maxLength: 16,
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.phone),
+              decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.phone),
                 helperText: 'Phone we can call you',
-                suffixIcon: Icon(Icons.delete_outline),
+                suffixIcon: GestureDetector(
+                  child: const Icon(Icons.delete_outline),
+                  onLongPress: () {
+                    _phoneController.clear();
+                  },
+                ),
                 suffixIconColor: Colors.red,
                 labelText: 'Phone Number',
                 hintText: '(xxx)xxxx-xxx',
-                enabledBorder: OutlineInputBorder(
+                enabledBorder: const OutlineInputBorder(
                   borderSide: BorderSide(
                     color: Colors.black,
                     width: 2,
@@ -114,7 +124,7 @@ class RegisterFormPageState extends State<RegisterFormPage> {
                     Radius.circular(16),
                   ),
                 ),
-                focusedBorder: OutlineInputBorder(
+                focusedBorder: const OutlineInputBorder(
                   borderSide: BorderSide(
                     color: Colors.blue,
                     width: 2,
@@ -150,9 +160,9 @@ class RegisterFormPageState extends State<RegisterFormPage> {
                 setState(() {
                   _selectedCountry = data as String;
                 });
-                value:
-                _selectedCountry;
+                // ignore: unused_label
               },
+              value: _selectedCountry,
             ),
             const SizedBox(height: 20),
             // Life story TextFormField
@@ -342,6 +352,7 @@ class RegisterFormPageState extends State<RegisterFormPage> {
           ),
           actions: [
             TextButton(
+              // ignore: prefer_const_constructors
               child: Text(
                 'Ok',
                 style: const TextStyle(
