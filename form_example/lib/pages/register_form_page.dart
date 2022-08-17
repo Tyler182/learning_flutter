@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:form_example/main.dart';
+import 'package:form_example/pages/user_info_page.dart';
 
 class RegisterFormPage extends StatefulWidget {
   const RegisterFormPage({Key? key}) : super(key: key);
@@ -23,6 +24,7 @@ class RegisterFormPageState extends State<RegisterFormPage> {
   final _formKey = GlobalKey<FormState>();
   List<String> _countries = ['Russia', 'Germany', 'France'];
   late String _selectedCountry = 'Russia';
+  User user = User(name: '', mail: '', story: '', country: '', phone: '');
 
   @override
   void dispose() {
@@ -41,6 +43,7 @@ class RegisterFormPageState extends State<RegisterFormPage> {
 
   @override
   Widget build(BuildContext context) {
+    user.country = _selectedCountry;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Register Form Page'),
@@ -55,8 +58,11 @@ class RegisterFormPageState extends State<RegisterFormPage> {
             TextFormField(
               focusNode: _nameFoxusNode,
               autofocus: true,
-              onFieldSubmitted: (str) {
+              onEditingComplete: () {
                 _changeFocus(context, _nameFoxusNode, _phoneFoxusNode);
+              },
+              onSaved: (str) {
+                user.name = _nameController.text;
               },
               controller: _nameController,
               validator: _validateName,
@@ -97,8 +103,11 @@ class RegisterFormPageState extends State<RegisterFormPage> {
             TextFormField(
               focusNode: _phoneFoxusNode,
               validator: _validatePhone,
-              onFieldSubmitted: (str) {
+              onEditingComplete: () {
                 _changeFocus(context, _phoneFoxusNode, _passFoxusNode);
+              },
+              onSaved: (str) {
+                user.phone = _phoneController.text;
               },
               controller: _phoneController,
               keyboardType: TextInputType.phone,
@@ -141,6 +150,9 @@ class RegisterFormPageState extends State<RegisterFormPage> {
               controller: _emailController,
               validator: _validateEmail,
               keyboardType: TextInputType.emailAddress,
+              onSaved: (str) {
+                user.mail = _emailController.text;
+              },
               decoration: const InputDecoration(
                 labelText: 'Email Address',
                 prefixIcon: Icon(Icons.mail),
@@ -160,6 +172,7 @@ class RegisterFormPageState extends State<RegisterFormPage> {
                 setState(() {
                   _selectedCountry = data as String;
                 });
+                user.country = _selectedCountry;
                 // ignore: unused_label
               },
               value: _selectedCountry,
@@ -168,6 +181,9 @@ class RegisterFormPageState extends State<RegisterFormPage> {
             // Life story TextFormField
             TextFormField(
               controller: _storyController,
+              onSaved: (str) {
+                user.story = _storyController.text;
+              },
               decoration: const InputDecoration(
                 labelText: 'Life Story',
                 hintText: 'Tell us about yourselve',
@@ -282,7 +298,6 @@ class RegisterFormPageState extends State<RegisterFormPage> {
       // print(_storyController.text);
       _showDialog(_nameController.text);
     } else {
-      
       _showSnackBar(message: 'Form is not valid');
     }
   }
@@ -320,8 +335,8 @@ class RegisterFormPageState extends State<RegisterFormPage> {
   }
 
   String? _validatePass(String? value) {
-    if (((value?.length ?? 0) <= 8)) {
-      return 'Password minimum 8 symbols';
+    if (((value?.length ?? 0) <= 1)) {
+      return 'Password minimum 1 symbols';
     } else if (_passController.text != _confirmPassController.text) {
       return 'Password and confirm password does not match';
     } else {
@@ -361,7 +376,14 @@ class RegisterFormPageState extends State<RegisterFormPage> {
                 ),
               ),
               onPressed: () {
+                print(user.name);
                 Navigator.pop(context);
+                var routeUserInfoPage = MaterialPageRoute(
+                  builder:(context) {
+                    return userInfoPage(user: user);
+                  },
+                );
+                Navigator.push(context, routeUserInfoPage);
               },
             ),
           ],
@@ -369,4 +391,13 @@ class RegisterFormPageState extends State<RegisterFormPage> {
       },
     );
   }
+}
+
+class User {
+  String name;
+  String story;
+  String country;
+  String phone;
+  String mail;
+  User({required this.name, required this.story, required this.country, required this.phone, required this.mail});
 }

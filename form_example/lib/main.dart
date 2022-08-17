@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:form_example/pages/user_info_page.dart';
 import 'pages/register_form_page.dart';
 
 void main() {
@@ -12,6 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  MaterialApp(
+      // home: const RegisterFormPage(),
       home: const RegisterFormPage(),
       scaffoldMessengerKey: rootScaffoldMessengerKey,
         theme: ThemeData(
