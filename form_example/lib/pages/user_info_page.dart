@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:form_example/pages/register_form_page.dart';
 
-class userInfoPage extends StatelessWidget {
-  const userInfoPage({required this.user});
+class UserInfoPage extends StatelessWidget {
+  const UserInfoPage({Key? key, required this.user}) : super(key: key);
 
   final User user;
 
   @override
   Widget build(BuildContext context) {
-    print(user.country);
     return Scaffold(
       appBar: AppBar(
-        title: Text('User info page'),
+        title: const Text('User info page'),
       ),
       body: Card(
         margin: const EdgeInsets.all(16.0),
@@ -20,12 +18,12 @@ class userInfoPage extends StatelessWidget {
           children: <Widget>[
             // ListTile with Name, User story, Country
             ListTile(
-              leading: Icon(Icons.person),
-              title: Text('${user.name}'),
+              leading: const Icon(Icons.person),
+              title: Text(user.name),
               subtitle: Text(user.story),
               trailing: user.country.isNotEmpty
                   ? Text(user.country)
-                  : SizedBox.shrink(),
+                  : const SizedBox.shrink(),
             ),
             // ListTile with Phone
             ListTileWidget(
@@ -48,18 +46,19 @@ class ListTileWidget extends StatelessWidget {
   final IconData? icon;
   final String text;
 
-  ListTileWidget({
+  const ListTileWidget({
+    Key? key,
     this.icon,
     required this.text,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return this.text.isNotEmpty
+    return text.isNotEmpty
         ? ListTile(
-            leading: Icon(this.icon),
-            title: Text(this.text),
+            leading: Icon(icon),
+            title: Text(text),
           )
-        : SizedBox.shrink();
+        : const SizedBox.shrink();
   }
 }

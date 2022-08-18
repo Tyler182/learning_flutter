@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:form_example/pages/user_info_page.dart';
 import 'pages/register_form_page.dart';
 
 void main() {

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:form_example/main.dart';
 import 'package:form_example/pages/user_info_page.dart';
 
 class RegisterFormPage extends StatefulWidget {
@@ -22,7 +20,7 @@ class RegisterFormPageState extends State<RegisterFormPage> {
   final _passFoxusNode = FocusNode();
 
   final _formKey = GlobalKey<FormState>();
-  List<String> _countries = ['Russia', 'Germany', 'France'];
+  final List<String> _countries = ['Russia', 'Germany', 'France'];
   late String _selectedCountry = 'Russia';
   User user = User(name: '', mail: '', story: '', country: '', phone: '');
 
@@ -313,6 +311,7 @@ class RegisterFormPageState extends State<RegisterFormPage> {
     }
   }
 
+  // ignore: unused_element
   String? _validatePhone(String? value) {
     final phoneExp = RegExp(r'^\(\d{3}\)\d{3}-\d{4}$');
     if ((value?.isEmpty) ?? false) {
@@ -324,6 +323,7 @@ class RegisterFormPageState extends State<RegisterFormPage> {
     }
   }
 
+  // ignore: unused_element
   String? _validateEmail(String? value) {
     if ((value?.isEmpty) ?? false) {
       return 'Email cannot be empty';
@@ -376,11 +376,10 @@ class RegisterFormPageState extends State<RegisterFormPage> {
                 ),
               ),
               onPressed: () {
-                print(user.name);
                 Navigator.pop(context);
                 var routeUserInfoPage = MaterialPageRoute(
                   builder:(context) {
-                    return userInfoPage(user: user);
+                    return UserInfoPage(user: user);
                   },
                 );
                 Navigator.push(context, routeUserInfoPage);
