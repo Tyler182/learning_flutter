@@ -3,9 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:form_example/pages/register_form_page.dart';
 
 class userInfoPage extends StatelessWidget {
+  const userInfoPage({required this.user});
 
-const userInfoPage({required this.user});
-  
   final User user;
 
   @override
@@ -23,22 +22,44 @@ const userInfoPage({required this.user});
             ListTile(
               leading: Icon(Icons.person),
               title: Text('${user.name}'),
-              subtitle: Text('${user.story}'),
-              trailing: Text('${user.country}'),
+              subtitle: Text(user.story),
+              trailing: user.country.isNotEmpty
+                  ? Text(user.country)
+                  : SizedBox.shrink(),
             ),
             // ListTile with Phone
-            ListTile(
-              leading: Icon(Icons.phone),
-              title: Text('${user.phone}'),
+            ListTileWidget(
+              icon: Icons.phone,
+              text: user.phone,
             ),
             // ListTile with Email
-            ListTile(
-              leading: Icon(Icons.mail),
-              title: Text('${user.mail}'),
+            ListTileWidget(
+              icon: Icons.mail,
+              text: user.mail,
             ),
           ],
         ),
       ),
     );
+  }
+}
+
+class ListTileWidget extends StatelessWidget {
+  final IconData? icon;
+  final String text;
+
+  ListTileWidget({
+    this.icon,
+    required this.text,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return this.text.isNotEmpty
+        ? ListTile(
+            leading: Icon(this.icon),
+            title: Text(this.text),
+          )
+        : SizedBox.shrink();
   }
 }

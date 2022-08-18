@@ -102,7 +102,7 @@ class RegisterFormPageState extends State<RegisterFormPage> {
             // Phone TextFormField
             TextFormField(
               focusNode: _phoneFoxusNode,
-              validator: _validatePhone,
+              // validator: _validatePhone,
               onEditingComplete: () {
                 _changeFocus(context, _phoneFoxusNode, _passFoxusNode);
               },
@@ -148,7 +148,7 @@ class RegisterFormPageState extends State<RegisterFormPage> {
             // Mail TextFormField
             TextFormField(
               controller: _emailController,
-              validator: _validateEmail,
+              // validator: _validateEmail,
               keyboardType: TextInputType.emailAddress,
               onSaved: (str) {
                 user.mail = _emailController.text;
