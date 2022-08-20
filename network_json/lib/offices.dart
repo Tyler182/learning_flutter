@@ -1,14 +1,13 @@
 class OfficeList {
   List<Office> officeList;
-  
+
   OfficeList({required this.officeList});
-  
+
   factory OfficeList.fromJson(Map<String, dynamic> json) {
     return OfficeList(
-      officeList: json['offices'] 
-    );
+        officeList:
+            (json['offices'] as List).map((i) => Office.fromJson(i)).toList());
   }
-
 }
 
 class Office {
