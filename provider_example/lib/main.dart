@@ -20,6 +20,8 @@ class MyApp extends StatelessWidget {
           create: (context) => UserProvider().loadUserData(),
           initialData: [],
         ),
+        StreamProvider(
+            create: (context) => EventProvider().intStream(), initialData: 0)
       ],
       child: MaterialApp(
         title: 'Inherited Demo',
@@ -164,7 +166,11 @@ class MyEventPage extends StatelessWidget {
       children: [
         const Text('StreamProvider Example', style: TextStyle(fontSize: 20)),
         const SizedBox(height: 50),
-        Text('0', style: Theme.of(context).textTheme.headline4)
+        Consumer<int>(
+          builder: (context, value, child) {
+            return Text('$value', style: Theme.of(context).textTheme.headline4);
+          },
+        )
       ],
     ));
   }
