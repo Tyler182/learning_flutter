@@ -1,7 +1,9 @@
 import 'dart:io';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+
 
 void main() => runApp(MyApp());
 
@@ -61,7 +63,9 @@ class _ReadWriteFileExampleState extends State<ReadWriteFileExample> {
                 child: Text('Load', style: TextStyle(fontSize: 20)),
                 onPressed: () async {
                   await this.readFromFile();
+                  log('Data successfully loaded');
                   _textController.text = this._content;
+                  textFieldFocusNode.requestFocus();
                 },
               ),
               MaterialButton(
@@ -69,7 +73,9 @@ class _ReadWriteFileExampleState extends State<ReadWriteFileExample> {
                 onPressed: () async {
                   await this.writeToFile(_textController.text);
                   await this.readFromFile();
+                  log('Data successfully saved');
                   _textController.clear();
+                  textFieldFocusNode.requestFocus();
                 },
               ),
             ],
