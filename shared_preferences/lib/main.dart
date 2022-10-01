@@ -54,7 +54,7 @@ class _SharedPrefereceExampleState extends State<SharedPrefereceExample> {
                 ElevatedButton(
                   child: Text('Increment'),
                   onPressed: () {
-                    setIntPrefs(this._intPrefs+=1);
+                    setIntPrefs(this._intPrefs += 1);
                   },
                 ),
               ]),
@@ -72,7 +72,9 @@ class _SharedPrefereceExampleState extends State<SharedPrefereceExample> {
           ),
           ElevatedButton(
             child: Text('Reset Data'),
-            onPressed: () {},
+            onPressed: () {
+              resetPrefs();
+            },
           ),
         ],
       ),
@@ -81,6 +83,9 @@ class _SharedPrefereceExampleState extends State<SharedPrefereceExample> {
 
   Future<Null> setIntPrefs(value) async {
     await this.prefs.setInt(keyIntPrefs, value);
+    setState(() {
+      this._intPrefs = value;
+    });
   }
 
   int readIntPrefs() {
@@ -89,6 +94,9 @@ class _SharedPrefereceExampleState extends State<SharedPrefereceExample> {
 
   Future<Null> setBoolPrefs(value) async {
     await this.prefs.setBool(keyBoolPrefs, value);
+    setState(() {
+      this._boolPrefs = value;
+    });
   }
 
   bool readBoolPrefs() {
@@ -98,6 +106,9 @@ class _SharedPrefereceExampleState extends State<SharedPrefereceExample> {
   Future<Null> resetPrefs() async {
     await this.prefs.remove(keyIntPrefs);
     await this.prefs.remove(keyBoolPrefs);
+    setState(() {
+      this._intPrefs = readIntPrefs();
+      this._boolPrefs = readBoolPrefs();
+    });
   }
-
 }
